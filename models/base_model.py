@@ -1,7 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 
 """some docstring goes here"""
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel():
@@ -9,15 +10,16 @@ class BaseModel():
     def __init__(self, *args, **kwargs):
         """this is some doc test"""
         if kwargs:
-            for key, value in kwargs.items():
+            for key in kwargs.keys():
                 if key != "__class__":
-                    setattr(self, key, value)
+                    self.__dict__[key] = kwargs[key]
             self.updated_at = datetime.fromisoformat(self.updated_at)
             self.created_at = datetime.fromisoformat(self.created_at)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def __str__(self):
         """soem docstring goes here"""
@@ -26,6 +28,8 @@ class BaseModel():
     def save(self):
         """some docs string goes here"""
         self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """somedoctstring goes here"""

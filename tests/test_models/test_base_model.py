@@ -30,8 +30,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str_method(self):
         """some doc string goes here"""
-        expected = f"[{self.b1.__class__.__name__}]
-        ({self.b1.id}) {self.b1.__dict__}"
+        expected = f"[{self.b1.__class__.__name__}] ({self.b1.id}) {self.b1.__dict__}"
         self.assertEqual(str(self.b1), expected,
                          "The output should be the same")
 
