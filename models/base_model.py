@@ -4,7 +4,6 @@ import uuid
 from datetime import datetime
 from models import storage
 
-
 class BaseModel():
     """some docment goes here"""
     def __init__(self, *args, **kwargs):
