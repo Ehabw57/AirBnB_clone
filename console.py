@@ -12,7 +12,8 @@ classes = {
 
 def get_by_id(class_name, id):
     """dooooocks"""
-    key = f'{class_name}.{id}'
+    key = f'{class_name.lower()}'
+    key = f"{classes[key].__name__}.{id}"
     if id == "":
         print("** instance id missing **")
     elif key not in storage.all().keys():
@@ -36,6 +37,16 @@ class HBNBCommand(cmd.Cmd):
     """dooooocks"""
     prompt = "(hbnb)"
     
+    def do_destroy(self, arg):
+        args = arg.split() + ['', '']
+        if class_check(args[0]):
+            instance = get_by_id(args[0], args[1])
+            if instance:
+                storage.delete(instance)
+                storage.save()
+
+
+
     def do_create(self, arg):
         """usage: create <class>\ncreate an instance of the class"""
         if cmd_check(arg):
