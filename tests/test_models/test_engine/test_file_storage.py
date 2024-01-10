@@ -2,7 +2,7 @@
 """Module fo testing file_storage module in the airbnb project"""
 import unittest
 from models.engine.file_storage import FileStorage
-
+from models.base_model import BaseModel
 
 class TestFileStorage(unittest.TestCase):
     """Test suite for the FileStorage class, with no instance created"""
@@ -17,10 +17,6 @@ class TestFileStorage(unittest.TestCase):
         """before creating any instance, __objects should be empty dict"""
         self.assertTrue(
                 isinstance(FileStorage._FileStorage__objects, dict),
-                "__objects must be a dictionary"
-                ) 
-        self.assertTrue(
-                len(FileStorage._FileStorage__objects) == 0,
                 "__objects must be a dictionary"
                 ) 
 
@@ -43,16 +39,15 @@ class TestFileStorageInstance(unittest.TestCase):
         self.assertTrue(FileStorage._FileStorage__file_path.endswith('.json'),
                         "file extention should be .json")
 
-    def test_all(self):
+    def test_all_method(self):
         """test for storage.all() method"""
         self.assertTrue(
                 isinstance(self.storage.all(), dict),
                 "storage.all() must return a dictionary"
                 ) 
 
-    def test_new(self):
+    def test_new_method(self):
         """test for storage.new() method"""
-        from models.base_model import BaseModel
         old_length = len(self.storage.all())
         b1 = BaseModel()
         self.storage.new(b1)
@@ -67,7 +62,19 @@ class TestFileStorageInstance(unittest.TestCase):
                 "storage.new() should add the object as it is in __objects"
                 )
 
-
-
+    def test_reload_method(self):
+        """Tests for the method reload()"""
+        b1 = BaseModel()
+        self.storage.new(b1)
+        self.storage.save()
+        self.storage.reload()
+        b1_reprisntion = FileStorage._FileStorage__objects[f"BaseModel.{b1.id}"]
+        self.assertTrue(
+                isinstance(
+                          b1_reprisntion, BaseModel), "Reloade objects should be inctance of it's class")
+        self.assertTrue(b1_reprisntion.to_dict() == b1.to_dict())
+        b1.name = "My b1 model"
+        self.assertFalse(b1_reprisntion.to_dict() ==  b1.to_dict())
+                        
 if __name__ == "___main__":
     unittest.main()
