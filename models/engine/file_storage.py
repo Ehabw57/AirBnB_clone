@@ -31,11 +31,7 @@ class FileStorage():
         try:
             with open(FileStorage.__file_path, 'r') as data_json:
                 FileStorage.__objects = json.load(data_json)
+            for key in FileStorage.__objects.items():
+                FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
-            pass
-        except Exception:
-            pass
-        for key in FileStorage.__objects.keys():
-            FileStorage.__objects[key] = BaseModel(**FileStorage.__objects[key])
-
-        
+            FileStorage.__objects = {}
