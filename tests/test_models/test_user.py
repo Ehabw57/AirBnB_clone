@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """somedocmoents goes  here"""
 import unittest
-from models.user_model import User
+from models.user import User
 
 
 class TestUser(unittest.TestCase):
