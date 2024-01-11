@@ -31,7 +31,11 @@ class FileStorage():
         try:
             with open(FileStorage.__file_path, 'r') as data_json:
                 FileStorage.__objects = json.load(data_json)
-            for key in FileStorage.__objects.items():
+            for key, value in FileStorage.__objects.items():
                 FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             FileStorage.__objects = {}
+
+    def delete(self,obj):
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        FileStorage.__objects.pop(key)

@@ -10,6 +10,7 @@ classes = {
         "user": User
         }
 
+
 def get_by_id(class_name, id):
     """dooooocks"""
     key = f'{class_name.lower()}'
@@ -20,7 +21,6 @@ def get_by_id(class_name, id):
         print("** no instance found **")
     else:
         return storage.all()[key]
-
 
 
 def class_check(arg):
@@ -36,16 +36,25 @@ def class_check(arg):
 class HBNBCommand(cmd.Cmd):
     """dooooocks"""
     prompt = "(hbnb)"
-    
+
+    def do_all(self, arg):
+        """Usage: all <class>\n show all instances of the class"""
+        instance_list = []
+        args = arg.split() + ['', '']
+        if class_check(args[0]):
+            for instance in storage.all().keys():
+                if args[0].lower() == instance[:len(args[0])].lower():
+                    instance_list.append(str(storage.all()[instance]))
+            print(instance_list)
+
     def do_destroy(self, arg):
+        """Usage: destroy <class><instance id>\nDelete the instance of class"""
         args = arg.split() + ['', '']
         if class_check(args[0]):
             instance = get_by_id(args[0], args[1])
             if instance:
                 storage.delete(instance)
                 storage.save()
-
-
 
     def do_create(self, arg):
         """usage: create <class>\ncreate an instance of the class"""
@@ -61,7 +70,6 @@ class HBNBCommand(cmd.Cmd):
             instance = get_by_id(args[0], args[1])
             instance and print(instance)
 
-
     def do_quit(self, arg):
         """usage: quit\nexit the console"""
         return True
@@ -75,6 +83,6 @@ class HBNBCommand(cmd.Cmd):
         """handle empty input"""
         pass
 
-    
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
