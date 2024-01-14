@@ -1,13 +1,20 @@
-#!/usr/bin/python3 
-"""some docstring goes here"""
+#!/usr/bin/python3
+"""Module containing the BaseModel class."""
 import uuid
 from datetime import datetime
 from models import storage
 
+
 class BaseModel():
-    """some docment goes here"""
+    """Base class for all models in the Airbnb website."""
+
     def __init__(self, *args, **kwargs):
-        """this is some doc test"""
+        """Initialize a new instance of the BaseModel class.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
         if kwargs:
             for key in kwargs.keys():
                 if key != "__class__":
@@ -21,17 +28,24 @@ class BaseModel():
             storage.new(self)
 
     def __str__(self):
-        """soem docstring goes here"""
+        """Return a string representation of the BaseModel.
+
+        Returns:
+            str: [<class_name>] (<instance_id>) <instance_attrs>"""
         return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
-        """some docs string goes here"""
+        """Update the 'updated_at' attribute and save BaseModel instances"""
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
 
     def to_dict(self):
-        """somedoctstring goes here"""
+        """Return a dictionary representation of the BaseModel.
+
+        Returns:
+            dict: Dictionary representation of the BaseModel.
+        """
         new_dict = self.__dict__.copy()
         new_dict['__class__'] = self.__class__.__name__
         new_dict['created_at'] = self.created_at.isoformat()

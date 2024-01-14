@@ -1,73 +1,95 @@
 #!/usr/bin/python3
-"""somedocmoents goes  here"""
+"""Module containing unit tests for the BaseModel class."""
 import unittest
 from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
-    """some docs goes here"""
+    """Test cases for the BaseModel class."""
+
     def setUp(self):
-        """some doc goes here"""
+        """Set up the test fixtures."""
         self.b1 = BaseModel()
         self.b2 = BaseModel()
 
     def tearDown(self):
-        """some doc goeshere"""
+        """Tear down the test fixtures."""
         del self.b1
         del self.b2
 
     def test_uid(self):
-        """some doc here"""
-        self.assertTrue(isinstance(self.b1.id, str), "Uid should be a string")
-        self.assertFalse(self.b1.id == self.b2.id, "Uid should'nt be the same")
+        """Test the uniqueness of the instance IDs."""
+        self.assertTrue(isinstance(self.b1.id, str), "ID should be a string")
+        self.assertNotEqual(self.b1.id, self.b2.id, "IDs should be different")
 
     def test_time(self):
-        """seom mother fu docs"""
-        self.assertNotEqual(self.b1.created_at, self.b2.created_at,
-                            "instance can't have same created time")
-        self.assertNotEqual(self.b1.updated_at, self.b2.updated_at,
-                            "instances can't have the same updated time")
+        """Test the creation and update times."""
+        self.assertNotEqual(
+            self.b1.created_at, self.b2.created_at,
+            "Instances should have different creation times"
+        )
+        self.assertNotEqual(
+            self.b1.updated_at, self.b2.updated_at,
+            "Instances should have different update times"
+        )
 
     def test_str_method(self):
-        """some doc string goes here"""
-        expected = f"[{self.b1.__class__.__name__}] ({self.b1.id}) {self.b1.__dict__}"
+        """Test the __str__ method."""
+        name = f"[{self.b1.__class__.__name__}]"
+        expected = f"{name} ({self.b1.id}) {self.b1.__dict__}"
         self.assertEqual(str(self.b1), expected,
-                         "The output should be the same")
+                         "Output should match the expected string")
 
     def test_save_method(self):
-        """some mf doc goes here"""
-        self.assertFalse(self.b1.updated_at > self.b2.updated_at,
-                         "first instance can't be newer than sex instance")
+        """Test the save method."""
+        self.assertFalse(
+            self.b1.updated_at > self.b2.updated_at,
+            "First instance should not be newer than the second instance"
+        )
         self.b1.save()
-        self.assertTrue(self.b1.updated_at > self.b2.updated_at,
-                        "Save should updated the time")
+        self.assertTrue(
+            self.b1.updated_at > self.b2.updated_at,
+            "Save should update the update time"
+        )
 
     def test_dict_method(self):
-        """soem doc string goes here"""
-        dict = self.b1.to_dict()
-        self.assertEqual(dict['__class__'], self.b1.__class__.__name__,
-                         "Both items shoud be the values")
-        self.assertEqual(dict['created_at'], self.b1.created_at.isoformat(),
-                         "Both should be the same value")
-        self.assertEqual(dict['updated_at'], self.b1.updated_at.isoformat(),
-                         "Both should be the same value")
+        """Test the to_dict method."""
+        obj_dict = self.b1.to_dict()
+        self.assertEqual(
+            obj_dict['__class__'], self.b1.__class__.__name__,
+            "Class names should match"
+        )
+        self.assertEqual(
+            obj_dict['created_at'], self.b1.created_at.isoformat(),
+            "Creation times should match"
+        )
+        self.assertEqual(
+            obj_dict['updated_at'], self.b1.updated_at.isoformat(),
+            "Update times should match"
+        )
 
     def test_init(self):
-        """soem docs goes here"""
-        json_dict = self.b1.to_dict()
-        self.b0 = BaseModel(**json_dict)
+        """Test the __init__ method."""
+        obj_dict = self.b1.to_dict()
+        self.b0 = BaseModel(**obj_dict)
 
-        for key in json_dict.keys():
+        for key in obj_dict.keys():
             if key not in ['updated_at', 'created_at', '__class__']:
-                self.assertEqual(json_dict[key], self.b0.__dict__[key],
-                                 f"[{key}] this what we are testing now")
+                self.assertEqual(
+                    obj_dict[key], self.b0.__dict__[key],
+                    f"Values for key '{key}' should match"
+                )
 
-        self.assertEqual(type(self.b0.updated_at), type(self.b1.updated_at),
-                         "Updated+created must be instances of datetime class")
-        self.assertEqual(type(self.b0.created_at), type(self.b1.created_at),
-                         "Updated+created must be instances of datetime class")
+        self.assertEqual(
+            type(self.b0.updated_at), type(self.b1.updated_at),
+            "Updated time should be an instance of the datetime class"
+        )
+        self.assertEqual(
+            type(self.b0.created_at), type(self.b1.created_at),
+            "Creation time should be an instance of the datetime class"
+        )
         self.assertFalse('__class__' in self.b0.__dict__)
 
 
-if __name__ == "___main__":
+if __name__ == "__main__":
     unittest.main()

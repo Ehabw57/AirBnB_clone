@@ -1,32 +1,47 @@
 #!/usr/bin/python3
-"""soem fukn docstriong goes here"""
+"""Module containing the FileStorage class for persisting data to JSON."""
 import json
 
+
 class FileStorage():
-    """some freaking doc goes here"""
-    __file_path = 'data.json'
+    """Class for serializing and deserializing instances to and from JSON.
+
+    Attributes:
+        __file_path (str): The path to the JSON file.
+        __objects (dict): A dictionary containing all serializable objects.
+    """
+
+    __file_path = 'Data.json'
     __objects = {}
 
     def all(self):
-        """doooooc"""
+        """Return the dictionary of all serialized objects.
+
+        Returns:
+            dict: Dictionary containing all serialized objects.
+        """
         return FileStorage.__objects
 
     def new(self, obj):
-        """doc doc doc"""
+        """Add a new serialized object to the dictionary.
+
+        Args:
+            obj: The object to be serialized and added to the dictionary.
+        """
         key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
-        
+
     def save(self):
-        """doki doki"""
+        """Serialize objects and save them to the JSON file."""
         json_dict = FileStorage.__objects.copy()
         for key, value in json_dict.items():
             json_dict[key] = value.to_dict()
 
         with open(FileStorage.__file_path, 'w') as data_json:
-           json.dump(json_dict, data_json)
+            json.dump(json_dict, data_json)
 
     def reload(self):
-        """doco doco"""
+        """Deserialize objects from the JSON file and creat the dictionary"""
         from models.base_model import BaseModel
         from models.user import User
         from models.city import City
@@ -34,17 +49,16 @@ class FileStorage():
         from models.state import State
         from models.review import Review
         from models.amenity import Amenity
-        
-        
+
         classes = {
-                "BaseModel": BaseModel,
-                "User": User,
-                "City": City,
-                "Place": Place,
-                "State": State,
-                "Review": Review,
-                "Amenity": Amenity
-                }
+            "BaseModel": BaseModel,
+            "User": User,
+            "City": City,
+            "Place": Place,
+            "State": State,
+            "Review": Review,
+            "Amenity": Amenity
+        }
         try:
             with open(FileStorage.__file_path, 'r') as data_json:
                 FileStorage.__objects = json.load(data_json)
@@ -53,6 +67,11 @@ class FileStorage():
         except FileNotFoundError:
             FileStorage.__objects = {}
 
-    def delete(self,obj):
+    def delete(self, obj):
+        """Remove the serialized object from the dictionary.
+
+        Args:
+            obj: The object to be removed from the dictionary.
+        """
         key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects.pop(key)
