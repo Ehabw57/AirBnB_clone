@@ -27,8 +27,8 @@ class TestUser(unittest.TestCase):
     def test_inheritance(self):
         """Test that State inherits from BaseModel"""
         self.assertTrue(
-                issubclass(State, BaseModel)
-                and State is not BaseModel
+                issubclass(User, BaseModel)
+                and User is not BaseModel
                 )
 
     def test_uid(self):

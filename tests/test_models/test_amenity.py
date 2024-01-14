@@ -10,7 +10,6 @@ class TestAmenity(unittest.TestCase):
     def test_attributes(self):
         """some doc here"""
         self.assertTrue(Amenity.name is '')
-        self.assertFalse(type(Amenity.name) is str)
 
     def test_inheritance(self):
         """Test that Amenity inherits from BaseModel"""

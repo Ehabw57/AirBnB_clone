@@ -10,9 +10,7 @@ class TestCity(unittest.TestCase):
     def test_attributes(self):
         """some doc here"""
         self.assertTrue(City.name is '')
-        self.assertFalse(type(City.name) is str)
         self.assertTrue(City.state_id is '')
-        self.assertFalse(type(City.state_id) is str)
 
     def test_inheritance(self):
         """Test that City inherits from BaseModel"""

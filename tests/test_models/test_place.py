@@ -17,9 +17,12 @@ class TestPlace(unittest.TestCase):
         self.assertTrue(Place.number_bathrooms is 0)
         self.assertTrue(Place.max_guest is 0)
         self.assertTrue(Place.price_by_night is 0)
-        self.assertTrue(Place.latitude is 0.0)
-        self.assertTrue(Place.longitude is 0.0)
-        self.assertTrue(Place.amenity_ids is [])
+        self.assertTrue(Place.latitude == 0.0)
+        self.assertTrue(Place.longitude == 0.0)
+        self.assertTrue(Place.amenity_ids == [])
+        self.assertTrue(type(Place.longitude) is float)
+        self.assertTrue(type(Place.latitude) is float)
+        self.assertTrue(type(Place.amenity_ids) is list)
 
     def test_inheritance(self):
         """Test that Place inherits from BaseModel"""
