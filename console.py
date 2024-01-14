@@ -50,7 +50,7 @@ def class_check(arg):
     if arg == "":
         print("** class name missing **")
     elif arg.lower() not in classes.keys():
-        print("** class doesn't exist**")
+        print("** class doesn't exist **")
     else:
         return True
 
