@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"""somedocmoents goes  here"""
+"""some doc moents goes  here"""
 import unittest
 from models.user import User
+from models.base_model import BaseModel
 
 
 class TestUser(unittest.TestCase):
@@ -15,6 +16,20 @@ class TestUser(unittest.TestCase):
         """some doc goeshere"""
         del self.b1
         del self.b2
+
+    def test_attributes(self):
+        """some doki doki here"""
+        self.assertTrue(User.email is "")
+        self.assertTrue(User.password is "")
+        self.assertTrue(User.first_name is "")
+        self.assertTrue(User.last_name is "")
+
+    def test_inheritance(self):
+        """Test that State inherits from BaseModel"""
+        self.assertTrue(
+                issubclass(State, BaseModel)
+                and State is not BaseModel
+                )
 
     def test_uid(self):
         """some doc here"""
