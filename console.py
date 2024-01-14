@@ -61,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """before going any where."""
-        cmds = ['all', 'show', 'count', 'update']
+        cmds = ['all', 'show', 'count', 'update', 'destory']
         split = line.split('.', 1) + ['', '']
         class_name = split[0].lower()
         split = split[1].split('(', 1) + [')']
@@ -70,6 +70,14 @@ class HBNBCommand(cmd.Cmd):
         if class_name in classes and command in cmds:
             return f'{command} {class_name} {args}'
         return line
+
+    def do_count(self, arg):
+        """usage: count <class>\ncounts how many  instance in the class"""
+        count = 0
+        for value in storage.all().values():
+            if arg.lower() == value.__class__.__name__.lower():
+                count += 1
+        print(count)
 
     def do_all(self, arg):
         """Usage: all [class]\nshow all instances of the class, or just all"""
