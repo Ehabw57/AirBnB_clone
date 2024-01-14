@@ -59,12 +59,24 @@ class HBNBCommand(cmd.Cmd):
     """dooooocks"""
     prompt = "(hbnb) "
 
+    def precmd(self, line):
+        """before going any where."""
+        cmds = ['all', 'show', 'count', 'update']
+        split = line.split('.', 1) + ['', '']
+        class_name = split[0].lower()
+        split = split[1].split('(', 1) + [')']
+        command = split[0].lower()
+        args = split[1].split(')')[0]
+        if class_name in classes and command in cmds:
+            return f'{command} {class_name} {args}'
+        return line
+
     def do_all(self, arg):
         """Usage: all [class]\nshow all instances of the class, or just all"""
         instance_list = []
         if arg == "":
             instance_list = [str(val) for val in storage.all().values()]
-        else class_check(arg):
+        elif class_check(arg):
             for value in storage.all().values():
                 if arg.lower() == value.__class__.__name__.lower():
                     instance_list.append(str(value))
