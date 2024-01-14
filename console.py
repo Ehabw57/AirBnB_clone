@@ -61,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """before going any where."""
-        cmds = ['all', 'show', 'count', 'update', 'destory']
+        cmds = ['all', 'show', 'count', 'update', 'destroy']
         split = line.split('.', 1) + ['', '']
         class_name = split[0].lower()
         split = split[1].split('(', 1) + [')']
