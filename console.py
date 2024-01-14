@@ -84,11 +84,12 @@ class HBNBCommand(cmd.Cmd):
         instance_list = []
         if arg == "":
             instance_list = [str(val) for val in storage.all().values()]
+            print(instance_list)
         elif class_check(arg):
             for value in storage.all().values():
                 if arg.lower() == value.__class__.__name__.lower():
                     instance_list.append(str(value))
-        print(instance_list)
+            print(instance_list)
 
     def do_create(self, arg):
         """usage: create <class>\ncreate an instance of the class"""

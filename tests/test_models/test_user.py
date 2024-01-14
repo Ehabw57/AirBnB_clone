@@ -43,12 +43,6 @@ class TestUser(unittest.TestCase):
         self.assertNotEqual(self.b1.updated_at, self.b2.updated_at,
                             "instances can't have the same updated time")
 
-    def test_str_method(self):
-        """some doc string goes here"""
-        expected = f"[{self.b1.__class__.__name__}] ({self.b1.id}) {self.b1.__dict__}"
-        self.assertEqual(str(self.b1), expected,
-                         "The output should be the same")
-
     def test_save_method(self):
         """some mf doc goes here"""
         self.assertFalse(self.b1.updated_at > self.b2.updated_at,

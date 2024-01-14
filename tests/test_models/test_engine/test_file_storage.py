@@ -4,6 +4,7 @@ import unittest
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
+
 class TestFileStorage(unittest.TestCase):
     """Test suite for the FileStorage class, with no instance created"""
     def test_path(self):
@@ -18,7 +19,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertTrue(
                 isinstance(FileStorage._FileStorage__objects, dict),
                 "__objects must be a dictionary"
-                ) 
+                )
 
 
 class TestFileStorageInstance(unittest.TestCase):
@@ -44,7 +45,7 @@ class TestFileStorageInstance(unittest.TestCase):
         self.assertTrue(
                 isinstance(self.storage.all(), dict),
                 "storage.all() must return a dictionary"
-                ) 
+                )
 
     def test_new_method(self):
         """test for storage.new() method"""
@@ -55,7 +56,7 @@ class TestFileStorageInstance(unittest.TestCase):
         self.assertTrue(
                 new_length == old_length + 1,
                 "storage.new() is not adding to the __objects"
-                ) 
+                )
         b1_from_storage = self.storage.all()[f'BaseModel.{b1.id}']
         self.assertTrue(
                 b1_from_storage is b1,
@@ -68,13 +69,14 @@ class TestFileStorageInstance(unittest.TestCase):
         self.storage.new(b1)
         self.storage.save()
         self.storage.reload()
-        b1_reprisntion = FileStorage._FileStorage__objects[f"BaseModel.{b1.id}"]
-        self.assertTrue(
-                isinstance(
-                          b1_reprisntion, BaseModel), "Reloade objects should be inctance of it's class")
-        self.assertTrue(b1_reprisntion.to_dict() == b1.to_dict())
+        b1_repr = FileStorage._FileStorage__objects[f"BaseModel.{b1.id}"]
+        self.assertTrue(isinstance(
+            b1_repr, BaseModel),
+                        "Reloade objects should be inctance of it's class")
+        self.assertTrue(b1_repr.to_dict() == b1.to_dict())
         b1.name = "My b1 model"
-        self.assertFalse(b1_reprisntion.to_dict() ==  b1.to_dict())
-                        
+        self.assertFalse(b1_repr.to_dict() == b1.to_dict())
+
+
 if __name__ == "___main__":
     unittest.main()
